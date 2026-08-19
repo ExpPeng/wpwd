@@ -331,3 +331,6 @@ h2.title {
   .gallery__thumbs { grid-template-columns: repeat(6, 1fr); }
   .gallery__main img { aspect-ratio: 16 / 10; }
 }
+#guestbook {
+  scroll-margin-top: 80px;
+}

@@ -26,7 +26,7 @@
     <main>
       <h1>ADMIN</h1>
 
-      <section id="login-view" hidden>
+      <!-- <section id="login-view" hidden>
         <form id="login-form">
           <label for="email">อีเมล</label>
           <input id="email" type="email" autocomplete="username" required />
@@ -35,14 +35,11 @@
           <button type="submit">Login</button>
           <p class="msg" id="login-msg" role="status" aria-live="polite"></p>
         </form>
-      </section>
+      </section> -->
 
-      <section id="admin-view" hidden>
-        <p>
-          <span id="who" class="meta"></span>
-          <button type="button" id="logout">Logout</button>
-        </p>
-        <hr />
+      <section id="admin-view">
+        <p class="meta">จัดการคำอวยพรจากแขก</p>
+          <hr />
         <h2 style="font-size: 17px">คำอวยพร</h2>
         <p class="msg" id="admin-msg" role="status" aria-live="polite"></p>
         <div id="list"></div>

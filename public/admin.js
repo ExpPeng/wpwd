@@ -1,91 +1,146 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-
-const C = window.WEDDING_CONFIG;
-const supabase = createClient(C.supabaseUrl, C.supabaseKey);
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbzLltSnY-jCscOV3zaNCiMo8Alia9JaKN-GA2YKkcIC6JcaXmk3MSRZO6cg0bq5oqzd/exec";
+  
 const $ = (id) => document.getElementById(id);
 
-function setMsg(id, msg, isErr) {
+function setMsg(id, msg, isErr = false) {
   const el = $(id);
+  if (!el) return;
+
   el.textContent = msg;
   el.className = isErr ? "msg err" : "msg";
 }
 
-function formatDate(iso) {
-  return new Intl.DateTimeFormat("th-TH", {
-    dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Bangkok",
-  }).format(new Date(iso));
-}
+function formatDate(value) {
+  if (!value) return "";
 
-async function render() {
-  const { data: { user } } = await supabase.auth.getUser();
-  $("login-view").hidden = !!user;
-  $("admin-view").hidden = !user;
-  if (!user) return;
-  $("who").textContent = user.email + " ";
-  loadWishes();
-}
-
-async function loadWishes() {
-  const { data, error } = await supabase
-    .from("wishes")
-    .select("id,name,message,created_at")
-    .order("created_at", { ascending: false });
-
-  const list = $("list");
-  list.innerHTML = "";
-  if (error) return setMsg("admin-msg", "โหลดข้อมูลไม่สำเร็จ", true);
-  if (!data.length) return setMsg("admin-msg", "ยังไม่มีคำอวยพร", false);
-  setMsg("admin-msg", `ทั้งหมด ${data.length} รายการ`, false);
-
-  for (const w of data) {
-    const card = document.createElement("div");
-    card.className = "card";
-
-    const name = document.createElement("div");
-    name.textContent = "ชื่อ: " + w.name;
-
-    const msg = document.createElement("pre");
-    msg.textContent = w.message;
-
-    const date = document.createElement("div");
-    date.className = "meta";
-    date.textContent = formatDate(w.created_at);
-
-    const del = document.createElement("button");
-    del.type = "button";
-    del.className = "danger";
-    del.textContent = "ลบ";
-    del.addEventListener("click", async () => {
-      if (!confirm("ลบคำอวยพรนี้?")) return;
-      del.disabled = true;
-      const { error: delError } = await supabase.from("wishes").delete().eq("id", w.id);
-      if (delError) {
-        del.disabled = false;
-        return setMsg("admin-msg", "ลบไม่สำเร็จ", true);
-      }
-      loadWishes();
-    });
-
-    card.append(name, msg, date, del);
-    list.appendChild(card);
+  try {
+    return new Intl.DateTimeFormat("th-TH", {
+      dateStyle: "medium",
+      timeStyle: "short",
+      timeZone: "Asia/Bangkok",
+    }).format(new Date(value));
+  } catch (_) {
+    return "";
   }
 }
 
-$("login-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  setMsg("login-msg", "กำลังเข้าสู่ระบบ...", false);
-  const { error } = await supabase.auth.signInWithPassword({
-    email: $("email").value.trim(),
-    password: $("password").value,
+
+/* =========================================================
+   โหลดคำอวยพร
+   ========================================================= */
+
+async function loadWishes() {
+  const list = $("list");
+
+  list.innerHTML = "";
+  setMsg("admin-msg", "กำลังโหลด...", false);
+
+  try {
+    const response = await fetch(API_URL);
+    const result = await response.json();
+
+    if (!result.ok) {
+      throw new Error(result.error || "โหลดข้อมูลไม่สำเร็จ");
+    }
+
+    const data = result.data || [];
+
+    if (data.length === 0) {
+      setMsg("admin-msg", "ยังไม่มีคำอวยพร", false);
+      return;
+    }
+
+    setMsg("admin-msg", `ทั้งหมด ${data.length} รายการ`, false);
+
+    for (const wish of data) {
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const name = document.createElement("div");
+      name.textContent = "ชื่อ: " + wish.name;
+
+      const message = document.createElement("pre");
+      message.textContent = wish.message;
+
+      const date = document.createElement("div");
+      date.className = "meta";
+      date.textContent = formatDate(wish.created_at);
+
+      const del = document.createElement("button");
+      del.type = "button";
+      del.className = "danger";
+      del.textContent = "ลบ";
+
+      del.addEventListener("click", () => deleteWish(wish.id, del));
+
+      card.append(name, message, date, del);
+      list.appendChild(card);
+    }
+
+  } catch (error) {
+    console.error(error);
+    setMsg("admin-msg", "โหลดคำอวยพรไม่สำเร็จ", true);
+  }
+}
+
+
+/* =========================================================
+   ลบคำอวยพร
+   ========================================================= */
+
+async function deleteWish(id, button) {
+  if (!confirm("ลบคำอวยพรนี้?")) return;
+
+  button.disabled = true;
+  button.textContent = "กำลังลบ...";
+
+  const body = JSON.stringify({
+    action: "delete",
+    id: id,
   });
-  if (error) return setMsg("login-msg", "เข้าสู่ระบบไม่สำเร็จ", true);
-  setMsg("login-msg", "", false);
-  render();
-});
 
-$("logout").addEventListener("click", async () => {
-  await supabase.auth.signOut();
-  render();
-});
+  try {
+    /*
+     * ส่งไป Google Apps Script
+     *
+     * ไม่รอ response เพราะ Browser ไม่สามารถ
+     * อ่าน response จาก Apps Script ข้ามโดเมนได้
+     */
+    fetch(API_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "text/plain;charset=UTF-8",
+      },
+      body: body,
+    }).catch((error) => {
+      console.error("Guestbook DELETE:", error);
+    });
 
-render();
+    /*
+     * ให้เวลา Apps Script ลบข้อมูลใน Sheet
+     */
+    setTimeout(() => {
+      loadWishes();
+    }, 1000);
+
+  } catch (error) {
+    console.error(error);
+
+    button.disabled = false;
+    button.textContent = "ลบ";
+
+    setMsg(
+      "admin-msg",
+      "เกิดข้อผิดพลาดในการลบ",
+      true
+    );
+  }
+}
+
+/* =========================================================
+   เริ่มต้น
+   ========================================================= */
+
+loadWishes();

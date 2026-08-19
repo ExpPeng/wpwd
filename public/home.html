@@ -4,10 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <base href="/" />
-    <title>ท๊อป & นก — การ์ดเชิญงานแต่งงาน 20 ธันวาคม 2569</title>
-    <meta name="description" content="ขอเชิญร่วมเป็นส่วนหนึ่งในวันสำคัญของ ท๊อป และ นก วันที่ 20 ธันวาคม 2569 พร้อมกำหนดการ แผนที่ และคำอวยพร" />
-    <meta property="og:title" content="ท๊อป & นก — การ์ดเชิญงานแต่งงาน" />
-    <meta property="og:description" content="ขอเชิญร่วมเป็นส่วนหนึ่งในวันสำคัญของเรา 20 ธันวาคม 2569" />
+    <title>Whan & Peng — การ์ดเชิญงานแต่งงาน 19 มกราคม 2568</title>
+    <meta name="description" content="ขอเชิญร่วมเป็นส่วนหนึ่งในวันสำคัญของ เปง และ หวาน วันที่ 19 มกราคม 2568 พร้อมกำหนดการ แผนที่ และคำอวยพร" />
+    <meta property="og:title" content="Whan & Peng — การ์ดเชิญงานแต่งงาน" />
+    <meta property="og:description" content="ขอเชิญร่วมเป็นส่วนหนึ่งในวันสำคัญของเรา 19 มกราคม 2568" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
@@ -176,23 +176,57 @@
         </div>
       </section> -->
 
+      
+
       <!-- 06 GUESTBOOK -->
-      <section class="section" aria-labelledby="gb-title">
-        <div class="wrap">
-          <p class="eyebrow">GUESTBOOK</p>
-          <h2 class="title" id="gb-title">คำอวยพรจากแขก</h2>
-          <div class="divider" aria-hidden="true"></div>
-          <form class="form" id="wish-form" novalidate>
-            <label for="wish-name">ชื่อของคุณ</label>
-            <input id="wish-name" name="name" type="text" maxlength="60" autocomplete="name" required />
-            <label for="wish-message">คำอวยพรของคุณ</label>
-            <textarea id="wish-message" name="message" maxlength="500" required></textarea>
-            <button class="btn btn--solid btn--block" type="submit" id="wish-submit">ส่งคำอวยพร</button>
-            <p class="form-msg" id="wish-msg" role="status" aria-live="polite"></p>
-          </form>
-          <ul class="wishes" id="wishes"></ul>
-        </div>
-      </section>
+<section
+  class="section"
+  id="guestbook"
+  aria-labelledby="gb-title"
+>
+  <div class="wrap">
+    <p class="eyebrow">GUESTBOOK</p>
+    <h2 class="title" id="gb-title">คำอวยพรจากแขก</h2>
+    <div class="divider" aria-hidden="true"></div>
+
+    <form class="form" id="wish-form" novalidate>
+      <label for="wish-name">ชื่อของคุณ</label>
+      <input
+        id="wish-name"
+        name="name"
+        type="text"
+        maxlength="60"
+        autocomplete="name"
+        required
+      />
+
+      <label for="wish-message">คำอวยพรของคุณ</label>
+      <textarea
+        id="wish-message"
+        name="message"
+        maxlength="500"
+        required
+      ></textarea>
+
+      <button
+        class="btn btn--solid btn--block"
+        type="submit"
+        id="wish-submit"
+      >
+        ส่งคำอวยพร
+      </button>
+
+      <p
+        class="form-msg"
+        id="wish-msg"
+        role="status"
+        aria-live="polite"
+      ></p>
+    </form>
+
+    <ul class="wishes" id="wishes"></ul>
+  </div>
+</section>
 
       <!-- 07 GIFT -->
       <section class="section section--cream gift" aria-labelledby="gift-title">

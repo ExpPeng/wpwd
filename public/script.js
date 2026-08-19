@@ -1,4 +1,4 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
 
 const C = window.WEDDING_CONFIG;
 const $ = (id) => document.getElementById(id);
@@ -223,90 +223,324 @@ audio.addEventListener("pause", syncBtn);
 
 
 /* ---------- GUESTBOOK ---------- */
-const supabase = createClient(C.supabaseUrl, C.supabaseKey, {
-  auth: { persistSession: false, autoRefreshToken: false },
-});
+
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbzLltSnY-jCscOV3zaNCiMo8Alia9JaKN-GA2YKkcIC6JcaXmk3MSRZO6cg0bq5oqzd/exec";
 
 const listEl = $("wishes");
 const formMsg = $("wish-msg");
 const submitBtn = $("wish-submit");
+
 let lastSubmit = 0;
 
-function showMsg(msg, kind) {
+
+/* ---------- แสดงข้อความสถานะ ---------- */
+
+function showMsg(msg, kind = "") {
+  if (!formMsg) return;
+
   formMsg.textContent = msg;
   formMsg.className = `form-msg ${kind}`;
 }
 
-function formatDate(iso) {
+
+/* ---------- วันที่ ---------- */
+
+function formatDate(value) {
+  if (!value) return "";
+
   try {
     return new Intl.DateTimeFormat("th-TH", {
-      dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Bangkok",
-    }).format(new Date(iso));
-  } catch (_) { return ""; }
+      dateStyle: "medium",
+      timeStyle: "short",
+      timeZone: "Asia/Bangkok",
+    }).format(new Date(value));
+  } catch (_) {
+    return "";
+  }
 }
+
+
+/* =========================================================
+   โหลดคำอวยพรทั้งหมด
+   ========================================================= */
 
 async function loadWishes() {
-  const { data, error } = await supabase
-    .from("wishes")
-    .select("id,name,message,created_at")
-    .order("created_at", { ascending: false })
-    .limit(100);
+  try {
+    const response = await fetch(
+      `${API_URL}?t=${Date.now()}`,
+      {
+        method: "GET",
+        cache: "no-store",
+      }
+    );
 
-  listEl.innerHTML = "";
-  if (error) {
+    const result = await response.json();
+
+    if (!result.ok) {
+      throw new Error(
+        result.error || "โหลดคำอวยพรไม่สำเร็จ"
+      );
+    }
+
+    const data = Array.isArray(result.data)
+      ? result.data
+      : [];
+
+    listEl.innerHTML = "";
+
+    if (data.length === 0) {
+      const li = document.createElement("li");
+
+      li.className = "wishes-empty";
+
+      li.textContent =
+        "ยังไม่มีคำอวยพร มาเป็นคนแรกกันเถอะ ❤️";
+
+      listEl.appendChild(li);
+
+      return;
+    }
+
+    /*
+     * แสดงทั้งหมด
+     * ล่าสุดอยู่ด้านบน
+     */
+
+    data
+      .slice()
+      .reverse()
+      .forEach((wish) => {
+
+        const li = document.createElement("li");
+
+        const name = document.createElement("div");
+
+        name.className = "wish-name";
+
+        name.textContent =
+          wish.name || "ผู้ร่วมอวยพร";
+
+
+        const message = document.createElement("p");
+
+        message.className = "wish-msg";
+
+        message.textContent =
+          wish.message || "";
+
+
+        const date = document.createElement("div");
+
+        date.className = "wish-date";
+
+        date.textContent =
+          formatDate(wish.created_at);
+
+
+        li.append(
+          name,
+          message,
+          date
+        );
+
+        listEl.appendChild(li);
+      });
+
+  } catch (error) {
+
+    console.error(
+      "Guestbook GET:",
+      error
+    );
+
+    listEl.innerHTML = "";
+
     const li = document.createElement("li");
+
     li.className = "wishes-empty";
-    li.textContent = "ไม่สามารถโหลดคำอวยพรได้ในขณะนี้";
-    listEl.appendChild(li);
-    return;
-  }
-  if (!data || data.length === 0) {
-    const li = document.createElement("li");
-    li.className = "wishes-empty";
-    li.textContent = "ยังไม่มีคำอวยพร มาเป็นคนแรกกันเถอะ ❤️";
-    listEl.appendChild(li);
-    return;
-  }
-  for (const w of data) {
-    const li = document.createElement("li");
-    const n = document.createElement("div");
-    n.className = "wish-name";
-    n.textContent = w.name; // textContent = ป้องกัน HTML injection
-    const m = document.createElement("p");
-    m.className = "wish-msg";
-    m.textContent = w.message;
-    const d = document.createElement("div");
-    d.className = "wish-date";
-    d.textContent = formatDate(w.created_at);
-    li.append(n, m, d);
+
+    li.textContent =
+      "ไม่สามารถโหลดคำอวยพรได้ในขณะนี้";
+
     listEl.appendChild(li);
   }
 }
 
-$("wish-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const name = $("wish-name").value.trim();
-  const message = $("wish-message").value.trim();
 
-  if (!name) return showMsg("กรุณากรอกชื่อของคุณ", "err");
-  if (name.length > 60) return showMsg("ชื่อต้องไม่เกิน 60 ตัวอักษร", "err");
-  if (!message) return showMsg("กรุณากรอกคำอวยพร", "err");
-  if (message.length > 500) return showMsg("คำอวยพรต้องไม่เกิน 500 ตัวอักษร", "err");
-  if (Date.now() - lastSubmit < 15000) return showMsg("กรุณารอสักครู่ก่อนส่งอีกครั้ง", "err");
+/* =========================================================
+   ส่งคำอวยพร
+   ========================================================= */
 
-  submitBtn.disabled = true;
-  showMsg("กำลังส่ง...", "");
-  const { error } = await supabase.from("wishes").insert({ name, message });
-  submitBtn.disabled = false;
+$("wish-form").addEventListener(
+  "submit",
+  async (e) => {
 
-  if (error) return showMsg("ส่งคำอวยพรไม่สำเร็จ กรุณาลองใหม่อีกครั้ง", "err");
-  lastSubmit = Date.now();
-  $("wish-form").reset();
-  showMsg("ขอบคุณสำหรับคำอวยพร ❤️", "ok");
-  loadWishes();
+    e.preventDefault();
+
+
+    const name =
+      $("wish-name").value.trim();
+
+    const message =
+      $("wish-message").value.trim();
+
+
+    /* ---------- ตรวจข้อมูล ---------- */
+
+    if (!name) {
+      showMsg(
+        "กรุณากรอกชื่อของคุณ",
+        "err"
+      );
+      return;
+    }
+
+
+    if (name.length > 60) {
+      showMsg(
+        "ชื่อต้องไม่เกิน 60 ตัวอักษร",
+        "err"
+      );
+      return;
+    }
+
+
+    if (!message) {
+      showMsg(
+        "กรุณากรอกคำอวยพร",
+        "err"
+      );
+      return;
+    }
+
+
+    if (message.length > 500) {
+      showMsg(
+        "คำอวยพรต้องไม่เกิน 500 ตัวอักษร",
+        "err"
+      );
+      return;
+    }
+
+
+    if (Date.now() - lastSubmit < 15000) {
+      showMsg(
+        "กรุณารอสักครู่ก่อนส่งอีกครั้ง",
+        "err"
+      );
+      return;
+    }
+
+
+    submitBtn.disabled = true;
+
+    showMsg(
+      "กำลังส่ง...",
+      ""
+    );
+
+
+    const body = JSON.stringify({
+      action: "create",
+      name: name,
+      message: message,
+    });
+
+
+    /*
+     * ส่งแบบ no-cors
+     *
+     * ไม่รอ response
+     * เพื่อไม่ให้เว็บค้าง
+     */
+
+    fetch(API_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type":
+          "text/plain;charset=UTF-8",
+      },
+      body: body,
+    }).catch((error) => {
+
+      console.error(
+        "Guestbook POST:",
+        error
+      );
+
+    });
+
+
+    /*
+     * ถือว่าส่ง request แล้ว
+     */
+
+    lastSubmit = Date.now();
+
+$("wish-form").reset();
+
+showMsg(
+  "ส่งคำอวยพรเรียบร้อยแล้ว ❤️",
+  "ok"
+);
+
+submitBtn.disabled = false;
+
+
+/* ---------- Refresh แล้วกลับมาที่ Guestbook ---------- */
+
+setTimeout(() => {
+
+  /*
+   * เก็บตำแหน่งว่าเราต้องการกลับมา
+   * ที่ Section คำอวยพร
+   */
+  sessionStorage.setItem(
+    "scrollToGuestbook",
+    "true"
+  );
+
+  window.location.reload();
+
+}, 1800);
 });
 
+/* =========================================================
+   โหลดคำอวยพรตอนเปิดหน้า
+   ========================================================= */
+
 loadWishes();
+
+
+/* ---------- กลับมาที่ Guestbook หลัง Refresh ---------- */
+
+if (
+  sessionStorage.getItem(
+    "scrollToGuestbook"
+  ) === "true"
+) {
+
+  sessionStorage.removeItem(
+    "scrollToGuestbook"
+  );
+
+  setTimeout(() => {
+
+    const guestbook = document.getElementById("guestbook");
+
+if (guestbook) {
+  guestbook.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+}
+
+  }, 500);
+}
+
+
 
 /* ---------- COPY ACCOUNT ---------- */
 $("copy-btn").addEventListener("click", async () => {

@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <base href="/" />
+    <title>ท๊อป & นก — การ์ดเชิญงานแต่งงาน 20 ธันวาคม 2569</title>
+    <meta name="description" content="ขอเชิญร่วมเป็นส่วนหนึ่งในวันสำคัญของ ท๊อป และ นก วันที่ 20 ธันวาคม 2569 พร้อมกำหนดการ แผนที่ และคำอวยพร" />
+    <meta property="og:title" content="ท๊อป & นก — การ์ดเชิญงานแต่งงาน" />
+    <meta property="og:description" content="ขอเชิญร่วมเป็นส่วนหนึ่งในวันสำคัญของเรา 20 ธันวาคม 2569" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Prata&family=Sarabun:wght@300;400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    
+
+    <!-- 01 HERO -->
+    <header class="hero">
+      <div class="wrap">
+        <div class="hero__frame">
+          <img id="hero-img" src="assets/images/hero.jpg" alt="ภาพคู่บ่าวสาว" width="1200" height="1500" fetchpriority="high" />
+        </div>
+        <p class="hero__msg" id="hero-msg"></p>
+        <h1 class="hero__msg2" id="hero-names">
+          <span id="hero-bride"></span>
+          <span class="hero__amp">&amp;</span>
+          <span id="hero-groom"></span>
+        </h1>
+        <p class="hero__full" id="hero-full"></p>
+        <p class="hero__date" id="hero-date"></p>
+      </div>
+    </header>
+
+
+    
+
+    <main>
+      
+      <!-- 02 PROFILE -->
+      <section class="section" aria-labelledby="profile-title">
+        <!-- 05 COUNTDOWN -->
+      
+        <!-- <div class="wrap">
+          <p class="eyebrow">COUNTDOWN</p>
+          <div class="divider" aria-hidden="true"></div>
+          <div id="countdown-wrap">
+            <div class="countdown">
+              <div class="cd-box"><div class="cd-num" id="cd-d">0</div><div class="cd-label">วัน</div></div>
+              <div class="cd-box"><div class="cd-num" id="cd-h">0</div><div class="cd-label">ชั่วโมง</div></div>
+              <div class="cd-box"><div class="cd-num" id="cd-m">0</div><div class="cd-label">นาที</div></div>
+              <div class="cd-box"><div class="cd-num" id="cd-s">0</div><div class="cd-label">วินาที</div></div>
+            </div>
+          </div>
+        </div> -->
+
+        <!-- 05 นับตั้งแต่ผ่านมาแล้ว -->
+
+            <div class="wrap">
+  <p class="eyebrow">OUR JOURNEY</p>
+  <div class="divider" aria-hidden="true"></div>
+
+  <div id="countdown-wrap">
+    <div class="countdown">
+      <div class="cd-box">
+        <div class="cd-num" id="cd-d">0</div>
+        <div class="cd-label">วัน</div>
+      </div>
+
+      <div class="cd-box">
+        <div class="cd-num" id="cd-h">0</div>
+        <div class="cd-label">ชั่วโมง</div>
+      </div>
+
+      <div class="cd-box">
+        <div class="cd-num" id="cd-m">0</div>
+        <div class="cd-label">นาที</div>
+      </div>
+
+      <div class="cd-box">
+        <div class="cd-num" id="cd-s">0</div>
+        <div class="cd-label">วินาที</div>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+        
+        <br>
+        
+      
+
+        <div class="wrap">
+          <p class="eyebrow">OUR STORY</p>
+          <h2 class="title" id="profile-title">แนะนำบ่าวสาว</h2>
+          <div class="divider" aria-hidden="true"></div>
+
+          <article class="person person--groom">
+            <div class="person__img"><img id="groom-img" src="assets/images/groom.jpg" alt="รูปเจ้าบ่าว" width="900" height="1125" loading="lazy" /></div>
+            <div>
+              <p class="person__role">เจ้าบ่าว</p>
+              <h3 class="person__name" id="groom-name"></h3>
+              <p class="person__nick" id="groom-nick"></p>
+              <p class="person__meta"><span>วันเกิด</span> <b id="groom-bd"></b></p>
+              <p class="person__meta"><span>งานอดิเรก</span> <b id="groom-hobby"></b></p>
+              <p class="person__special" id="groom-special"></p>
+            </div>
+          </article>
+
+          <article class="person person--bride">
+            <div class="person__img"><img id="bride-img" src="assets/images/bride.jpg" alt="รูปเจ้าสาว" width="900" height="1125" loading="lazy" /></div>
+            <div>
+              <p class="person__role">เจ้าสาว</p>
+              <h3 class="person__name" id="bride-name"></h3>
+              <p class="person__nick" id="bride-nick"></p>
+              <p class="person__meta"><span>วันเกิด</span> <b id="bride-bd"></b></p>
+              <p class="person__meta"><span>งานอดิเรก</span> <b id="bride-hobby"></b></p>
+              <p class="person__special" id="bride-special"></p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 03 GALLERY -->
+      <section class="section section--cream" aria-labelledby="gallery-title">
+        <div class="wrap">
+          <p class="eyebrow">GALLERY</p>
+          <h2 class="title" id="gallery-title">ภาพความทรงจำ</h2>
+          <div class="divider" aria-hidden="true"></div>
+          <button class="gallery__main" id="gallery-main" type="button" aria-label="เปิดภาพขนาดเต็ม">
+            <img id="gallery-main-img" src="assets/images/gallery/01.svg" alt="ภาพความทรงจำภาพหลัก" width="1000" height="750" loading="lazy" />
+          </button>
+          <div class="gallery__thumbs" id="gallery-thumbs"></div>
+          <p class="gallery__hint">แตะภาพเล็กเพื่อเปลี่ยนภาพ · แตะภาพใหญ่เพื่อดูเต็มจอ</p>
+        </div>
+      </section>
+
+      <!-- 04 EVENT -->
+      <section class="section" aria-labelledby="event-title">
+        <div class="wrap">
+          <p class="eyebrow">WEDDING DAY</p>
+          <h2 class="title" id="event-title">กำหนดการงาน</h2>
+          <div class="divider" aria-hidden="true"></div>
+          <p style="text-align:center;margin:0 0 26px" id="event-date"></p>
+          <ol class="timeline" id="timeline"></ol>
+
+          <div class="venue">
+            <h3 class="title" style="font-size:20px;margin-top:34px">สถานที่จัดงาน</h3>
+            <p id="venue-text"></p>
+            <p><a class="btn btn--solid" id="map-btn" href="#" target="_blank" rel="noopener">ดูสถานที่จัดงาน</a></p>
+            <h3 class="title" style="font-size:20px;margin-top:26px">ที่จอดรถ</h3>
+            <p>มีที่จอดรถแยกจากสถานที่จัดงาน</p>
+            <p><a class="btn" id="parking-btn" href="#" target="_blank" rel="noopener">ดูสถานที่จอดรถ</a></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 05 COUNTDOWN
+      <section class="section section--cream" aria-labelledby="cd-title">
+        <div class="wrap">
+          <p class="eyebrow">COUNTDOWN</p>
+          <h2 class="title" id="cd-title">นับถอยหลังสู่วันสำคัญ</h2>
+          <div class="divider" aria-hidden="true"></div>
+          <div id="countdown-wrap">
+            <div class="countdown">
+              <div class="cd-box"><div class="cd-num" id="cd-d">0</div><div class="cd-label">วัน</div></div>
+              <div class="cd-box"><div class="cd-num" id="cd-h">0</div><div class="cd-label">ชั่วโมง</div></div>
+              <div class="cd-box"><div class="cd-num" id="cd-m">0</div><div class="cd-label">นาที</div></div>
+              <div class="cd-box"><div class="cd-num" id="cd-s">0</div><div class="cd-label">วินาที</div></div>
+            </div>
+          </div>
+        </div>
+      </section> -->
+
+      <!-- 06 GUESTBOOK -->
+      <section class="section" aria-labelledby="gb-title">
+        <div class="wrap">
+          <p class="eyebrow">GUESTBOOK</p>
+          <h2 class="title" id="gb-title">คำอวยพรจากแขก</h2>
+          <div class="divider" aria-hidden="true"></div>
+          <form class="form" id="wish-form" novalidate>
+            <label for="wish-name">ชื่อของคุณ</label>
+            <input id="wish-name" name="name" type="text" maxlength="60" autocomplete="name" required />
+            <label for="wish-message">คำอวยพรของคุณ</label>
+            <textarea id="wish-message" name="message" maxlength="500" required></textarea>
+            <button class="btn btn--solid btn--block" type="submit" id="wish-submit">ส่งคำอวยพร</button>
+            <p class="form-msg" id="wish-msg" role="status" aria-live="polite"></p>
+          </form>
+          <ul class="wishes" id="wishes"></ul>
+        </div>
+      </section>
+
+      <!-- 07 GIFT -->
+      <section class="section section--cream gift" aria-labelledby="gift-title">
+        <div class="wrap">
+          <p class="eyebrow">WITH LOVE</p>
+          <h2 class="title" id="gift-title">ช่องทางร่วมแสดงความยินดี</h2>
+          <div class="divider" aria-hidden="true"></div>
+          <p class="gift__note">เพียงคำอวยพรของทุกท่านก็มีค่ามากสำหรับเราแล้ว<br />หากประสงค์ร่วมแสดงความยินดี สามารถใช้ช่องทางนี้ได้</p>
+          <div class="gift__card">
+            <button class="gift__qr" id="qr-btn" type="button" aria-label="เปิดภาพ QR ขนาดใหญ่">
+              <img id="qr-img" src="assets/images/bank-qr.svg" alt="QR สำหรับโอนเงิน" width="600" height="600" loading="lazy" />
+            </button>
+            <p class="gift__bank" id="bank-name"></p>
+            <p id="bank-acc-name"></p>
+            <p class="gift__acc" id="bank-number"></p>
+            <button class="btn btn--block" type="button" id="copy-btn">คัดลอกเลขบัญชี</button>
+            <p class="copy-msg" id="copy-msg" role="status" aria-live="polite"></p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 08 FOOTER -->
+    <footer class="footer">
+      <p>ขอบคุณที่มาร่วมเป็นส่วนหนึ่งในวันสำคัญของเรา ❤️</p>
+      <p class="names" id="footer-names"></p>
+    </footer>
+
+    <button class="music-btn" id="music-btn" type="button" aria-label="เปิด/ปิดเพลง" aria-pressed="false">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z" /></svg>
+    </button>
+    <audio id="audio" loop preload="auto" src="assets/music/wedding.mp3"></audio>
+
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="ภาพขนาดเต็ม">
+      <button class="lb-btn lb-close" id="lb-close" type="button" aria-label="ปิด">✕</button>
+      <button class="lb-btn lb-prev" id="lb-prev" type="button" aria-label="ภาพก่อนหน้า">‹</button>
+      <img id="lb-img" src="" alt="ภาพขนาดเต็ม" />
+      <button class="lb-btn lb-next" id="lb-next" type="button" aria-label="ภาพถัดไป">›</button>
+    </div>
+
+    <script src="config.js"></script>
+    <script type="module" src="script.js"></script>
+  </body>
+</html>
